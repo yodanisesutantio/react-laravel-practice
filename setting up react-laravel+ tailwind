@@ -1,0 +1,105 @@
+TutorialLink : https://www.youtube.com/watch?v=qBxo6hW83jU&list=PL38wFHH4qYZVOnXxcS0NMGGmUsZky6JNG
+
+1. Run "composer create-project --prefer-dist laravel/laravel myapp "11.*""
+2. "cd {your-folder-name}"
+3. before running npm install, we should give the project folder its permission "sudo chown -R $(whoami):$(whoami) /opt/lampp/htdocs/{your-folder-name}"
+4. Then, "npm install react react-dom"
+5. After its done, run this "npm install --save-dev @vitejs/plugin-react"
+6. Then, we continue to setup inertiajs "composer require inertiajs/inertia-laravel"
+7. Copy this code to ./resources/views/app.blade.js
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    @vite('resources/js/app.js')
+    @inertiaHead
+  </head>
+  <body>
+    @inertia
+  </body>
+</html>
+8. Create inertiajs middleware by running this command "php artisan inertia:middleware"
+9. Then copy this code to ./bootstrap/app.php
+->withMiddleware(function (Middleware $middleware) {
+        $middleware->web(append: [
+            HandleInertiaRequests::class,
+        ]);
+    })
+10. Don't forget to add "use App\Http\Middleware\HandleInertiaRequests;" at the top of the ./bootstrap/app.php
+11. Now, for the client-side setup, we need to type this command "npm install @inertiajs/react"
+12. Then, we can copy this code to ./resources/js/app.js
+import { createInertiaApp } from '@inertiajs/react'
+import { createRoot } from 'react-dom/client'
+
+createInertiaApp({
+  resolve: name => {
+    const pages = import.meta.glob('./Pages/**/*.jsx', { eager: true })
+    return pages[`./Pages/${name}.jsx`]
+  },
+  setup({ el, App, props }) {
+    createRoot(el).render(<App {...props} />)
+  },
+})
+13. After that done, we have to rename the ./resources/js/app.js to be .jsx
+14. From there, we can copy this code to ./vite.config.js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+    plugins: [
+        laravel(['resources/js/app.jsx']),
+        react(),
+    ],
+});
+15. Then, we go back to ./resources/views/app.blade.php, to copy this to the <head>
+@viteReactRefresh
+@vite('resources/js/app.jsx')
+16. Then, we go to the ./resources/js to create new folder called 'Pages'
+17. And create new file inside ./resources/js/Pages called 'Home.jsx' and copy this
+export default function Home() {
+    return (
+        <>
+            <h1>Hello User!</h1>
+        </>
+    );
+}
+18. Next up, we have to navigate to ./routes/web.php to replace this
+Route::get('/', function () {
+    return view('welcome');
+});
+to this
+Route::get('/', function () {
+    return inertia('Home');
+});
+19. After that, we can serve the application by typing "php artisan serve" and "npm run dev" in the terminal
+20. To install tailwind copy this command in the terminal
+npm install -D tailwindcss@3 postcss autoprefixer
+npx tailwindcss init -p
+21. Then copy this to ./tailwind.config.js
+content: [
+     './resources/**/*.blade.php',
+     './resources/**/*.jsx',
+     './resources/**/*.js',
+  ],
+22. and then navigate to ./resources/css/app.css, to copy this
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+23. To import the tailwind copy this to ./resources/js/app.jsx
+import '../css/app.css'
+24. Then test out to add tailwind utility class
+25. If this error comes up, "SQLSTATE[HY000]: General error: 1 no such table: sessions (Connection: sqlite, SQL: select * from "sessions" where "id" = 5D4yVmFZWrPTKQSBVNxcOqqoW5PMgrE4CVLVszky limit 1)" no worries, let's fix this
+26. copy this to terminal
+touch database/database.sqlite
+27. and then, replace the .env content to this
+DB_CONNECTION=sqlite
+DB_DATABASE=/database/database.sqlite
+28. Then, run migration by typing "php artisan migrate"
+29. Lastly, for an easier folder navigation when coding, we had to create an alias for ./resources/js folder, we can do that by copying this code to ./vite.config.js
+resolve: {
+    alias: {
+        "@" : "/resources/js",
+    },
+},

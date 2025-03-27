@@ -12,7 +12,7 @@ export default function Layout({ children }) {
                         Home
                     </Link>
                     <Link
-                        href="/create"
+                        href="/posts/create"
                         className="p-3 hover:cursor-pointer text-slate-200 hover:bg-slate-600 duration-300 rounded-lg"
                     >
                         Create

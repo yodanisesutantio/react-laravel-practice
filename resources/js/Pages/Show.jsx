@@ -1,4 +1,4 @@
-import { useForm } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 
 export default function Show({ post }) {
     const { delete: destroy } = useForm({
@@ -27,6 +27,19 @@ export default function Show({ post }) {
                             Delete
                         </button>
                     </form>
+                    {/* <Link
+                        href={`/posts/${post.id}/edit`}
+                        className="bg-green-500 rounded-lg px-4 py-3 text-white"
+                    >
+                        Update
+                    </Link> */}
+
+                    <Link
+                        href={route("posts.edit", post)}
+                        className="bg-green-500 rounded-lg px-4 py-3 text-white"
+                    >
+                        Update
+                    </Link>
                 </div>
             </div>
         </>

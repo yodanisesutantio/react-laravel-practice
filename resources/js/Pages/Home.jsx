@@ -26,6 +26,12 @@ export default function Home({ posts }) {
                 </div>
             )}
 
+            {flash.success && (
+                <div className="absolute top-20 right-5 bg-green-400 p-3 rounded-lg shadow-lg text-white">
+                    {flash.success}
+                </div>
+            )}
+
             <div className="">
                 {posts.data.map((post) => (
                     <div key={post.id} className="p-4 border-b">

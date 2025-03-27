@@ -1,23 +1,22 @@
 import { Head, useForm } from "@inertiajs/react";
 
-export default function Create() {
+export default function Edit({ post }) {
     // console.log(useForm());
-    const { data, setData, post, errors, processing } = useForm({
-        body: "",
+    const { data, setData, put, errors, processing } = useForm({
+        body: post.body,
     });
 
     function submit(e) {
         e.preventDefault();
-        post("/posts");
+        // put(`/posts/${post.id}`);
+        put(route("posts.update", post));
     }
-
-    console.log(errors);
 
     return (
         <>
-            <Head title="Create" />
+            <Head title="Edit" />
             <h1 className="text-slate-700 text-center font-bold text-5xl py-6">
-                Create a New Post
+                Edit your Post
             </h1>
 
             <div className="w-1/2 mx-auto">
@@ -44,7 +43,7 @@ export default function Create() {
                         className="bg-slate-800 hover:bg-slate-700 text-slate-100 py-3 rounded-lg duration-300"
                         disabled={processing}
                     >
-                        Create Post
+                        Update Post
                     </button>
                 </form>
             </div>

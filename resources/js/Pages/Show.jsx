@@ -1,4 +1,15 @@
+import { useForm } from "@inertiajs/react";
+
 export default function Show({ post }) {
+    const { delete: destroy } = useForm({
+        body: "",
+    });
+
+    function submit(e) {
+        e.preventDefault();
+        destroy(route("posts.destroy", post.id));
+    }
+
     return (
         <>
             <div className="p-4 border-b">
@@ -9,6 +20,14 @@ export default function Show({ post }) {
                     </span>
                 </div>
                 <p className="font-medium">{post.body}</p>
+
+                <div className="flex items-center justify-end gap-2">
+                    <form action="" onSubmit={submit}>
+                        <button className="bg-red-500 rounded-lg px-4 py-3 text-white">
+                            Delete
+                        </button>
+                    </form>
+                </div>
             </div>
         </>
     );

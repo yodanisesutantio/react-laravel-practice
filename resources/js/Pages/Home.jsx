@@ -1,7 +1,9 @@
 import { Link } from "@inertiajs/react";
+import { useRoute } from "../../../vendor/tightenco/ziggy";
 
 export default function Home({ posts }) {
-    console.log(posts);
+    const route = useRoute();
+
     return (
         <>
             <h1 className="text-slate-700 text-center font-bold text-6xl py-6">
@@ -18,6 +20,18 @@ export default function Home({ posts }) {
                             </span>
                         </div>
                         <p className="font-medium">{post.body}</p>
+                        {/* <Link
+                            href={`/posts/${post.id}`}
+                            className="text-blue-500 underline font-medium"
+                        >
+                            Read More...
+                        </Link> */}
+                        <Link
+                            href={route("posts.show", post.id)}
+                            className="text-blue-500 underline font-medium"
+                        >
+                            Read More...
+                        </Link>
                     </div>
                 ))}
             </div>

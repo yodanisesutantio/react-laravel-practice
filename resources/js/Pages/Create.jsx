@@ -1,4 +1,4 @@
-import { useForm } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 
 export default function Create() {
     // console.log(useForm());
@@ -15,6 +15,7 @@ export default function Create() {
 
     return (
         <>
+            <Head title="Create" />
             <h1 className="text-slate-700 text-center font-bold text-5xl py-6">
                 Create a New Post
             </h1>

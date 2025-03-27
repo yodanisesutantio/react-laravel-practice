@@ -1,10 +1,11 @@
-import { Link, usePage } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import { useRoute } from "../../../vendor/tightenco/ziggy";
 import { useState } from "react";
 
 export default function Home({ posts }) {
     const route = useRoute();
     const { flash } = usePage().props;
+    const { component } = usePage();
     const [flashMsg, setFlashMsg] = useState(flash.message);
     setTimeout(() => {
         setFlashMsg(null);
@@ -12,6 +13,9 @@ export default function Home({ posts }) {
 
     return (
         <>
+            <Head>
+                <title>{component}</title>
+            </Head>
             <h1 className="text-slate-700 text-center font-bold text-6xl py-6">
                 Hello
             </h1>
